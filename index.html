@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PositiveVocab | Infographic Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .img-hover:hover img {
+            transform: scale(1.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .upload-area.dragover {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        /* Fade transition for slideshow */
+        #lightboxImg {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-900 custom-scrollbar">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-effect border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                    <i data-lucide="sparkles"></i>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-indigo-900 hidden xs:block">PostiveVocab</h1>
+            </div>
+            
+            <div class="flex items-center gap-2 sm:gap-4 flex-1 justify-end">
+                <div class="relative max-w-xs w-full hidden md:block">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                        <i data-lucide="search" size="18"></i>
+                    </span>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all" 
+                        placeholder="Search words...">
+                </div>
+                
+                <button id="startSlideshow" class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-medium hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">
+                    <i data-lucide="play" size="16"></i>
+                    <span class="hidden sm:inline">Slide Show</span>
+                </button>
+
+                <button id="openAdmin" class="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors" title="Generate Metadata">
+                    <i data-lucide="settings" size="20"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Search -->
+    <div class="md:hidden px-4 py-3 bg-white border-b border-slate-100">
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i data-lucide="search" size="18"></i>
+            </span>
+            <input type="text" id="searchInputMobile" 
+                class="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 placeholder-slate-400 focus:outline-none" 
+                placeholder="Search words...">
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+            <div class="text-center md:text-left">
+                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Elevate Your Language</h2>
+                <p class="text-lg text-slate-600 max-w-2xl leading-relaxed">
+                    Explore our curated collection of positive vocabulary infographics, shuffled randomly to inspire you with every visit.
+                </p>
+            </div>
+            <button id="shuffleButton" class="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all">
+                <i data-lucide="shuffle" size="16"></i>
+                Shuffle Gallery
+            </button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div id="gallery" class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
+            <!-- Images will be injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="noResults" class="hidden py-20 text-center">
+            <div class="text-slate-300 mb-4 flex justify-center">
+                <i data-lucide="frown" size="64"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-600">No matching words found</h3>
+            <p class="text-slate-400">Try searching for something else!</p>
+        </div>
+    </main>
+
+    <!-- Admin/Metadata Modal -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Metadata Generator</h2>
+                    <p class="text-sm text-slate-500">Upload images to generate JSON for your code</p>
+                </div>
+                <button id="closeAdmin" class="p-2 hover:bg-slate-200 rounded-full transition-colors">
+                    <i data-lucide="x" size="24"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div id="dropzone" class="upload-area border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center transition-all cursor-pointer">
+                    <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
+                    <div class="text-indigo-600 mb-2 flex justify-center">
+                        <i data-lucide="cloud-upload" size="48"></i>
+                    </div>
+                    <p class="text-slate-700 font-semibold">Click to upload or drag and drop</p>
+                    <p class="text-xs text-slate-400 mt-1">Files will be parsed locally; no data is sent to a server.</p>
+                </div>
+
+                <div id="jsonResultContainer" class="hidden space-y-3">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-bold text-slate-700 uppercase tracking-wider">Generated JSON Metadata</label>
+                        <button id="copyJson" class="text-xs font-bold text-indigo-600 flex items-center gap-1 hover:underline">
+                            <i data-lucide="copy" size="14"></i> Copy JSON
+                        </button>
+                    </div>
+                    <pre id="jsonOutput" class="bg-slate-900 text-indigo-300 p-4 rounded-xl text-xs overflow-x-auto custom-scrollbar leading-relaxed"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slideshow / Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/98 flex items-center justify-center">
+        <!-- Close button -->
+        <button id="closeLightbox" class="absolute top-6 right-6 z-50 text-white/50 hover:text-white transition-colors">
+            <i data-lucide="x" size="32"></i>
+        </button>
+
+        <!-- Navigation -->
+        <button id="prevSlide" class="absolute left-4 sm:left-10 z-50 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all">
+            <i data-lucide="chevron-left" size="32"></i>
+        </button>
+        <button id="nextSlide" class="absolute right-4 sm:right-10 z-50 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all">
+            <i data-lucide="chevron-right" size="32"></i>
+        </button>
+
+        <!-- Content -->
+        <div class="max-w-4xl max-h-screen w-full flex flex-col items-center p-4">
+            <div class="relative group">
+                <img id="lightboxImg" src="" alt="Preview" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl">
+            </div>
+            <div class="text-center mt-6">
+                <h3 id="lightboxTitle" class="text-white text-2xl sm:text-3xl font-bold mb-2"></h3>
+                <p id="slideCounter" class="text-white/40 text-sm font-medium tracking-widest uppercase"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 mt-20 py-10 bg-white text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-slate-500">&copy; 2024 PostiveVocab Infographics.</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * INITIAL DATA
+         * Add your 100+ words here. They will be shuffled automatically.
+         */
+        let vocabImages = [
+            { name: "Resilient", file: "resilient.png" },
+            { name: "Benevolent", file: "benevolent.png" },
+            { name: "Effervescent", file: "effervescent.png" },
+            { name: "Luminous", file: "luminous.png" },
+            { name: "Serendipity", file: "serendipity.png" },
+            { name: "Ambition", file: "ambition.png" },
+            { name: "Radiant", file: "radiant.png" },
+            { name: "Optimistic", file: "optimistic.png" },
+            { name: "Harmony", file: "harmony.png" },
+            { name: "Elysian", file: "elysian.png" }
+        ];
+
+        // UI Selectors
+        const gallery = document.getElementById('gallery');
+        const searchInput = document.getElementById('searchInput');
+        const searchInputMobile = document.getElementById('searchInputMobile');
+        const noResults = document.getElementById('noResults');
+        const adminModal = document.getElementById('adminModal');
+        const openAdmin = document.getElementById('openAdmin');
+        const closeAdmin = document.getElementById('closeAdmin');
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const jsonResultContainer = document.getElementById('jsonResultContainer');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const copyJson = document.getElementById('copyJson');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const slideCounter = document.getElementById('slideCounter');
+        const closeLightbox = document.getElementById('closeLightbox');
+        const prevBtn = document.getElementById('prevSlide');
+        const nextBtn = document.getElementById('nextSlide');
+        const startSlideshowBtn = document.getElementById('startSlideshow');
+        const shuffleBtn = document.getElementById('shuffleButton');
+
+        let currentSlideIndex = 0;
+        let activeGalleryItems = [];
+
+        lucide.createIcons();
+
+        // --- UTILITY ---
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // --- CORE FUNCTIONS ---
+
+        function renderGallery(filter = '') {
+            const searchStr = typeof filter === 'string' ? filter : '';
+            gallery.innerHTML = '';
+            
+            activeGalleryItems = vocabImages.filter(item => {
+                const name = item.name || '';
+                return name.toLowerCase().includes(searchStr.toLowerCase());
+            });
+
+            if (activeGalleryItems.length === 0) {
+                noResults.classList.remove('hidden');
+                gallery.classList.add('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                gallery.classList.remove('hidden');
+                
+                activeGalleryItems.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'masonry-item group cursor-pointer';
+                    const imgPath = `Postivevocab/${item.file}`;
+                    
+                    card.innerHTML = `
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 img-hover">
+                            <div class="relative overflow-hidden aspect-auto bg-slate-50">
+                                <img src="${imgPath}" alt="${item.name}" class="w-full h-auto" loading="lazy" onerror="this.src='https://via.placeholder.com/400x500?text=${item.name}'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                    <span class="text-white font-medium flex items-center gap-2"><i data-lucide="maximize-2" size="16"></i> View Word</span>
+                                </div>
+                            </div>
+                            <div class="p-4 font-bold text-slate-800 text-lg">${item.name}</div>
+                        </div>
+                    `;
+
+                    card.addEventListener('click', () => openSlideshow(index));
+                    gallery.appendChild(card);
+                });
+                lucide.createIcons();
+            }
+        }
+
+        // --- SLIDESHOW LOGIC ---
+
+        function updateSlide() {
+            const item = activeGalleryItems[currentSlideIndex];
+            if (!item) return;
+
+            // Fade out
+            lightboxImg.style.opacity = '0';
+            
+            setTimeout(() => {
+                lightboxImg.src = `Postivevocab/${item.file}`;
+                lightboxTitle.innerText = item.name;
+                slideCounter.innerText = `${currentSlideIndex + 1} / ${activeGalleryItems.length}`;
+                // Fade in
+                lightboxImg.style.opacity = '1';
+            }, 200);
+        }
+
+        function openSlideshow(index = 0) {
+            if (activeGalleryItems.length === 0) return;
+            currentSlideIndex = index;
+            updateSlide();
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % activeGalleryItems.length;
+            updateSlide();
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
+            updateSlide();
+        }
+
+        // --- METADATA GENERATOR ---
+
+        function parseFiles(files) {
+            const newMetadata = Array.from(files).map(file => {
+                let name = file.name.split('.').slice(0, -1).join('.');
+                name = name.replace(/[-_]/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                return { name, file: file.name };
+            });
+            jsonOutput.textContent = JSON.stringify(newMetadata, null, 4);
+            jsonResultContainer.classList.remove('hidden');
+        }
+
+        // --- EVENT LISTENERS ---
+
+        [searchInput, searchInputMobile].forEach(input => {
+            input.addEventListener('input', (e) => renderGallery(e.target.value));
+        });
+
+        openAdmin.addEventListener('click', () => adminModal.classList.remove('hidden'));
+        closeAdmin.addEventListener('click', () => adminModal.classList.add('hidden'));
+
+        startSlideshowBtn.addEventListener('click', () => openSlideshow(0));
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+        
+        shuffleBtn.addEventListener('click', () => {
+            shuffle(vocabImages);
+            renderGallery(searchInput.value || searchInputMobile.value);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeLightbox.click();
+        });
+
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) parseFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) parseFiles(e.target.files);
+        });
+
+        copyJson.addEventListener('click', () => {
+            const text = jsonOutput.textContent;
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            copyJson.innerHTML = `<i data-lucide="check" size="14"></i> Copied!`;
+            lucide.createIcons();
+            setTimeout(() => { copyJson.innerHTML = `<i data-lucide="copy" size="14"></i> Copy JSON`; lucide.createIcons(); }, 2000);
+        });
+
+        closeLightbox.addEventListener('click', () => {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        window.onload = () => {
+            shuffle(vocabImages); // Shuffle on first load
+            renderGallery();
+        };
+    </script>
+</body>
+</html>

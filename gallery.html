@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PositiveVocab | Creative Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.08) translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay-icon {
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalImage,
+        #modalVideo {
+            max-width: 85vw;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .modal-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background: rgba(102, 126, 234, 0.6);
+            border-color: rgba(102, 126, 234, 0.8);
+        }
+
+        .stats {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+        }
+
+        .slideshow-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1 class="title">✨ Creative Gallery</h1>
+                <p class="text-white text-sm opacity-75">Explore the Positive Vocabulary Collection</p>
+            </div>
+            <div class="controls">
+                <button class="btn tooltip" id="shuffleBtn" onclick="shuffleGallery()">
+                    🔀 Shuffle
+                    <span class="tooltiptext">Randomize the order</span>
+                </button>
+                <button class="btn tooltip" id="slideshowBtn" onclick="toggleSlideshow()">
+                    ▶ Slideshow
+                    <span class="tooltiptext">Auto-play all items</span>
+                </button>
+                <div class="stats">
+                    <span id="itemCount">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Container -->
+    <div class="gallery-container">
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <span>Loading gallery...</span>
+        </div>
+        <div id="gallery" class="gallery-grid" style="display: none;"></div>
+        <div id="empty" class="empty" style="display: none;">
+            <p>No images or videos found in the Positivevocab folder.</p>
+        </div>
+    </div>
+
+    <!-- Modal for Full View -->
+    <div id="modal" class="modal">
+        <div class="modal-controls">
+            <button class="modal-btn tooltip" onclick="toggleSlideshow()">
+                <span id="slideshowIcon">▶</span> Auto
+                <span class="tooltiptext">Toggle slideshow mode</span>
+            </button>
+            <button class="modal-btn tooltip" onclick="closeModal()">
+                ✕ Close
+                <span class="tooltiptext">Close modal (ESC)</span>
+            </button>
+        </div>
+
+        <button class="nav-btn prev" onclick="previousItem()">❮</button>
+
+        <div class="modal-content">
+            <img id="modalImage" style="display: none;" alt="Full view">
+            <video id="modalVideo" style="display: none;" controls></video>
+            <div class="slideshow-indicator" id="slideshowIndicator" style="display: none;">
+                <span id="currentIndex">1</span> / <span id="totalItems">1</span>
+            </div>
+        </div>
+
+        <button class="nav-btn next" onclick="nextItem()">❯</button>
+    </div>
+
+    <script>
+        let galleryItems = [];
+        let currentIndex = 0;
+        let isSlideshow = false;
+        let slideshowInterval = null;
+
+        // Initialize gallery
+        async function initGallery() {
+            try {
+                const response = await fetch('api/gallery-files');
+                const files = await response.json();
+
+                if (!files || files.length === 0) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('empty').style.display = 'block';
+                    return;
+                }
+
+                galleryItems = files.map((file, index) => ({
+                    id: index,
+                    name: file,
+                    type: file.toLowerCase().endsWith('.mp4') ? 'video' : 'image',
+                    path: `Postivevocab/${file}`
+                }));
+
+                renderGallery();
+                document.getElementById('itemCount').textContent = `${galleryItems.length} items`;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('gallery').style.display = 'grid';
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div>
+                        <p style="color: white; margin-bottom: 1rem;">Error loading gallery</p>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+                            Please ensure the server is running or files are accessible.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render gallery items
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            galleryItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.onclick = () => openModal(index);
+
+                if (item.type === 'video') {
+                    div.innerHTML = `
+                        <video style="pointer-events: none;">
+                            <source src="${item.path}" type="video/mp4">
+                        </video>
+                        <div class="video-badge">▶ VIDEO</div>
+                        <div class="overlay">
+                            <div class="overlay-icon">🎬</div>
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <img src="${item.path}" alt="${item.name}" style="pointer-events: none;">
+                        <div class="overlay">
+                            <div class="overlay-icon">🔍</div>
+                        </div>
+                    `;
+                }
+
+                gallery.appendChild(div);
+            });
+        }
+
+        // Open modal with specific item
+        function openModal(index) {
+            currentIndex = index;
+            const item = galleryItems[index];
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalVideo = document.getElementById('modalVideo');
+
+            if (item.type === 'video') {
+                modalImage.style.display = 'none';
+                modalVideo.style.display = 'block';
+                modalVideo.src = item.path;
+            } else {
+                modalVideo.style.display = 'none';
+                modalImage.style.display = 'block';
+                modalImage.src = item.path;
+                modalImage.alt = item.name;
+            }
+
+            document.getElementById('currentIndex').textContent = index + 1;
+            document.getElementById('totalItems').textContent = galleryItems.length;
+
+            modal.classList.add('active');
+            if (isSlideshow) {
+                document.getElementById('slideshowIndicator').style.display = 'block';
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            stopSlideshow();
+        }
+
+        // Navigate to next item
+        function nextItem() {
+            currentIndex = (currentIndex + 1) % galleryItems.length;
+            openModal(currentIndex);
+        }
+
+        // Navigate to previous item
+        function previousItem() {
+            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            openModal(currentIndex);
+        }
+
+        // Toggle slideshow
+        function toggleSlideshow() {
+            if (isSlideshow) {
+                stopSlideshow();
+            } else {
+                startSlideshow();
+            }
+        }
+
+        // Start slideshow
+        function startSlideshow() {
+            isSlideshow = true;
+            document.getElementById('slideshowBtn').classList.add('active');
+            document.getElementById('slideshowIcon').textContent = '⏸';
+            document.getElementById('slideshowIndicator').style.display = 'block';
+
+            slideshowInterval = setInterval(() => {
+                nextItem();
+            }, 3000); // Change image every 3 seconds
+        }
+
+        // Stop slideshow
+        function stopSlideshow() {
+            isSlideshow = false;
+            document.getElementById('slideshowBtn').classList.remove('active');
+            document.getElementById('slideshowIcon').textContent = '▶';
+            document.getElementById('slideshowIndicator').style.display = 'none';
+
+            if (slideshowInterval) {
+                clearInterval(slideshowInterval);
+                slideshowInterval = null;
+            }
+        }
+
+        // Shuffle gallery
+        function shuffleGallery() {
+            for (let i = galleryItems.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [galleryItems[i], galleryItems[j]] = [galleryItems[j], galleryItems[i]];
+            }
+            renderGallery();
+            currentIndex = 0;
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('modal');
+            if (!modal.classList.contains('active')) return;
+
+            switch (e.key) {
+                case 'ArrowRight':
+                    nextItem();
+                    break;
+                case 'ArrowLeft':
+                    previousItem();
+                    break;
+                case 'Escape':
+                    closeModal();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    toggleSlideshow();
+                    break;
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', initGallery);
+    </script>
+</body>
+</html>
