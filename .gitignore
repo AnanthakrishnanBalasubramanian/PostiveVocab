@@ -1,0 +1,19 @@
+# Ignore large media files
+Postivevocab/*.jpg
+Postivevocab/*.png
+Postivevocab/*.gif
+Postivevocab/*.mp4
+Postivevocab/*.mov
+Postivevocab/*.avi
+
+# Dependencies
+node_modules/
+npm-debug.log
+.DS_Store
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

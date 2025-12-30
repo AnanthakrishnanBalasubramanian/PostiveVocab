@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PositiveVocab - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid;
+        }
+        .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        .button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .button-secondary {
+            background: white;
+            color: #667eea;
+            border-color: #667eea;
+        }
+        .button-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center text-white mb-12">
+            <h1 class="text-5xl font-bold mb-2">PositiveVocab</h1>
+            <p class="text-xl opacity-90">Positive Vocabulary Collection</p>
+        </div>
+
+        <!-- Main Options -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- Gallery Card -->
+            <div class="card">
+                <div class="text-4xl mb-3">🎨</div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Creative Gallery</h2>
+                <p class="text-gray-700 mb-4">
+                    Browse your PositiveVocab collection with beautiful thumbnails, full-size viewer, shuffle, and slideshow features.
+                </p>
+                <div class="flex flex-col gap-2">
+                    <a href="gallery.html" class="button button-primary text-center">
+                        Open Gallery →
+                    </a>
+                    <a href="setup.html" class="button button-secondary text-center">
+                        Setup Guide
+                    </a>
+                </div>
+            </div>
+
+            <!-- Original Page Card -->
+            <div class="card">
+                <div class="text-4xl mb-3">📚</div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Original Collection</h2>
+                <p class="text-gray-700 mb-4">
+                    The original PositiveVocab collection page with all infographics organized and formatted.
+                </p>
+                <div class="flex flex-col gap-2">
+                    <a href="index.html" class="button button-primary text-center">
+                        View Collection →
+                    </a>
+                    <p class="text-sm text-gray-600 mt-2">📂 Upload, organize, and manage your collection</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="card text-center">
+                <div class="text-3xl mb-2">📊</div>
+                <div class="font-bold text-gray-900">169 Items</div>
+                <div class="text-sm text-gray-600">162 Images + 8 Videos</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl mb-2">⚡</div>
+                <div class="font-bold text-gray-900">Lightning Fast</div>
+                <div class="text-sm text-gray-600">Optimized Performance</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-3xl mb-2">🎯</div>
+                <div class="font-bold text-gray-900">Easy to Use</div>
+                <div class="text-sm text-gray-600">Keyboard Shortcuts</div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="card mb-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">✨ Gallery Features</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">📸</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Thumbnail Gallery</div>
+                        <div class="text-sm text-gray-600">Browse all items at once</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">🔀</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Shuffle</div>
+                        <div class="text-sm text-gray-600">Randomize the order</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">▶</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Slideshow</div>
+                        <div class="text-sm text-gray-600">Auto-play through items</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">⌨️</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Keyboard Navigation</div>
+                        <div class="text-sm text-gray-600">Arrow keys & more</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">🎬</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Video Support</div>
+                        <div class="text-sm text-gray-600">Play MP4 files</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">🔍</div>
+                    <div>
+                        <div class="font-bold text-gray-900">Full-Size Viewer</div>
+                        <div class="text-sm text-gray-600">Click to expand</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Started -->
+        <div class="card">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">🚀 Getting Started</h3>
+            <div class="space-y-3">
+                <div class="flex gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-md bg-indigo-500 text-white font-bold">1</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-900">Start the Server</div>
+                        <p class="text-sm text-gray-600">Run <code class="bg-gray-200 px-2 py-1 rounded">npm start</code> in your terminal</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-md bg-indigo-500 text-white font-bold">2</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-900">Open the Gallery</div>
+                        <p class="text-sm text-gray-600">Visit <code class="bg-gray-200 px-2 py-1 rounded">localhost:3000/gallery.html</code></p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-md bg-indigo-500 text-white font-bold">3</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-900">Explore & Enjoy</div>
+                        <p class="text-sm text-gray-600">Browse, shuffle, and watch slideshows!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-white mt-12">
+            <p class="opacity-75">Created with ❤️ for PositiveVocab | Version 1.0</p>
+        </div>
+    </div>
+</body>
+</html>

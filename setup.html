@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - PositiveVocab Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+        .step {
+            margin-bottom: 1.5rem;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .step-content {
+            margin-left: 48px;
+            color: #475569;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e11d48;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .keyboard-shortcuts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .shortcut {
+            background: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .key {
+            background: #1e293b;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="card text-center">
+            <div class="title">🎨 PositiveVocab Creative Gallery</div>
+            <div class="subtitle">Setup & Quick Start Guide</div>
+        </div>
+
+        <!-- Features -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">✨ Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="feature-icon">📸</div>
+                    <div class="feature-title">Thumbnail Grid</div>
+                    <div class="feature-desc">Browse all images and videos at once</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-title">Full-Size Viewer</div>
+                    <div class="feature-desc">Click to view items in full resolution</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔀</div>
+                    <div class="feature-title">Shuffle</div>
+                    <div class="feature-desc">Randomize the order of your collection</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">▶</div>
+                    <div class="feature-title">Slideshow</div>
+                    <div class="feature-desc">Auto-play through all items</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎬</div>
+                    <div class="feature-title">Video Support</div>
+                    <div class="feature-desc">Watch MP4 videos directly</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⌨️</div>
+                    <div class="feature-title">Keyboard Controls</div>
+                    <div class="feature-desc">Navigate with keyboard shortcuts</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">🚀 Quick Start</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">Open Terminal/Command Prompt</div>
+                <div class="step-content">
+                    Navigate to the PostiveVocab directory where you saved these files.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Start the Server (Choose One)</div>
+                <div class="step-content">
+                    <p><strong>Option A: Using Node.js (Recommended)</strong></p>
+                    <div class="code-block">npm install
+npm start</div>
+
+                    <p style="margin-top: 1rem;"><strong>Option B: Using PHP</strong></p>
+                    <div class="code-block">php -S localhost:3000</div>
+
+                    <p style="margin-top: 1rem;"><strong>Option C: No Server (Fallback)</strong></p>
+                    <p>Just open <code>gallery.html</code> directly in your browser!</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">View the Gallery</div>
+                <div class="step-content">
+                    Open your browser and go to: <code>http://localhost:3000/gallery.html</code>
+                </div>
+            </div>
+
+            <div class="success">
+                ✅ Your gallery should now be live! Explore and enjoy.
+            </div>
+        </div>
+
+        <!-- Controls Guide -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">🎮 How to Use</h2>
+            
+            <h3 class="text-xl font-bold text-gray-800 mt-4 mb-2">Gallery Page</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
+                <li><strong>Click any thumbnail</strong> to view in full size</li>
+                <li><strong>🔀 Shuffle Button</strong> to randomize the order</li>
+                <li><strong>▶ Slideshow Button</strong> to auto-play (3 seconds per item)</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 mt-4 mb-2">Full-Size Viewer</h3>
+            <div class="keyboard-shortcuts">
+                <div class="shortcut">
+                    <div><span class="key">→</span> <strong>Arrow Right</strong></div>
+                    <div class="text-sm text-gray-600">Next item</div>
+                </div>
+                <div class="shortcut">
+                    <div><span class="key">←</span> <strong>Arrow Left</strong></div>
+                    <div class="text-sm text-gray-600">Previous item</div>
+                </div>
+                <div class="shortcut">
+                    <div><span class="key">Space</span> <strong>Spacebar</strong></div>
+                    <div class="text-sm text-gray-600">Toggle slideshow</div>
+                </div>
+                <div class="shortcut">
+                    <div><span class="key">ESC</span> <strong>Escape</strong></div>
+                    <div class="text-sm text-gray-600">Close viewer</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requirements -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">📋 Requirements</h2>
+            
+            <p class="text-gray-700 mb-3">Choose at least one:</p>
+            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                <li><strong>Node.js</strong> (Recommended) - Download from <a href="https://nodejs.org" target="_blank" class="text-blue-600 hover:underline">nodejs.org</a></li>
+                <li><strong>PHP</strong> - Download from <a href="https://www.php.net" target="_blank" class="text-blue-600 hover:underline">php.net</a></li>
+                <li><strong>Modern Web Browser</strong> - Chrome, Firefox, Safari, Edge</li>
+            </ul>
+
+            <div class="warning">
+                <strong>⚠️ Note:</strong> The Postivevocab folder must be in the same directory as gallery.html for files to load properly.
+            </div>
+        </div>
+
+        <!-- File Structure -->
+        <div class="card">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">📁 File Structure</h2>
+            <div class="code-block">PostiveVocab/
+├── gallery.html              ← Main gallery page
+├── index.html                ← Original index (links here)
+├── setup.html               ← This file
+├── server.js                ← Node.js server
+├── package.json             ← Node.js dependencies
+├── api-gallery-files.php    ← PHP API
+├── README.md                ← Full documentation
+└── Postivevocab/           ← Your image & video folder
+    ├── (images)
+    └── (videos)</div>
+        </div>
+
+        <!-- Gallery Link -->
+        <div class="card text-center">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Go?</h2>
+            <p class="text-gray-700 mb-4">Start the server (see Quick Start above) then open the gallery:</p>
+            <a href="gallery.html" class="button">Open Gallery →</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="card text-center text-gray-600">
+            <p>For detailed documentation, see <code>README.md</code></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">Created with ❤️ for PositiveVocab</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -15,9 +15,9 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            padding: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            padding: 2.5rem;
         }
 
         .gallery-item {
@@ -28,6 +28,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             aspect-ratio: 1;
+            min-height: 220px;
         }
 
         .gallery-item:hover {
@@ -399,8 +400,29 @@
         // Initialize gallery
         async function initGallery() {
             try {
-                const response = await fetch('api/gallery-files');
-                const files = await response.json();
+                let files = [];
+                
+                // Try Node.js/Express API first
+                try {
+                    const response = await fetch('/api/gallery-files', { timeout: 2000 });
+                    if (response.ok) {
+                        files = await response.json();
+                    }
+                } catch (e) {
+                    console.log('Express API not available, trying PHP API...');
+                    
+                    // Fallback to PHP API
+                    try {
+                        const response = await fetch('/api-gallery-files.php', { timeout: 2000 });
+                        if (response.ok) {
+                            files = await response.json();
+                        }
+                    } catch (e2) {
+                        console.log('PHP API not available, using fallback method...');
+                        // Fallback: Load from hardcoded list
+                        files = await loadFallbackGallery();
+                    }
+                }
 
                 if (!files || files.length === 0) {
                     document.getElementById('loading').style.display = 'none';
@@ -425,11 +447,162 @@
                     <div>
                         <p style="color: white; margin-bottom: 1rem;">Error loading gallery</p>
                         <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                            Please ensure the server is running or files are accessible.
+                            Please ensure the server is running with Node.js (npm start) or PHP.
                         </p>
                     </div>
                 `;
             }
+        }
+
+        // Fallback gallery list (pre-populated from Postivevocab folder)
+        async function loadFallbackGallery() {
+            // This is a hardcoded list of files - update manually if needed
+            return [
+                "1757394318224.jpg",
+                "1757482343122.jpg",
+                "1757482343122~2.jpg",
+                "1757482343122~3.jpg",
+                "1757482498715~2.jpg",
+                "1757567590888.jpg",
+                "1757652480622.jpg",
+                "1757741114422.jpg",
+                "1757919681158.jpg",
+                "1758000342430.jpg",
+                "1758000465704.jpg",
+                "1758089905240.jpg",
+                "1758168059987.jpg",
+                "1758263397825.jpg",
+                "1758263558785.jpg",
+                "1758360964143.jpg",
+                "1758374430985.jpg",
+                "1758428101113.jpg",
+                "1758517654476.jpg",
+                "1758635113783.jpg",
+                "1758683946244.jpg",
+                "1758775040093.jpg",
+                "1758865919029.jpg",
+                "1758948136418.jpg",
+                "1759043851526.jpg",
+                "1759045525966.jpg",
+                "1759120829972.jpg",
+                "1759211398393.jpg",
+                "1759314986913.jpg",
+                "1759395760249.jpg",
+                "1759463703545.jpg",
+                "1759553445711.jpg",
+                "1759570681334.mp4",
+                "1759570701464.mp4",
+                "1759570727876.mp4",
+                "1759645735567.jpg",
+                "1759724802730.jpg",
+                "1759813860167.jpg",
+                "1759899174367.jpg",
+                "1759994812746.jpg",
+                "1760070670378.jpg",
+                "1760156388118.jpg",
+                "1760248647220.jpg",
+                "1760340470539.jpg",
+                "1760417845961.jpg",
+                "1760502987398.jpg",
+                "1760592735247.jpg",
+                "1760678602756.jpg",
+                "1760678662139.jpg",
+                "1760772503381.jpg",
+                "1760854618476.jpg",
+                "1760946288398.jpg",
+                "1761022312477.jpg",
+                "1761161936867.jpg",
+                "1761194981204.jpg",
+                "1761283441686.jpg",
+                "1761372612932.jpg",
+                "1761543918983.jpg",
+                "1761764176842.jpg",
+                "1761797329127.jpg",
+                "1761890154245.jpg",
+                "1762017834531.jpg",
+                "1762069060537.jpg",
+                "1762144831481.jpg",
+                "1762172806545.jpg",
+                "1762232219098.jpg",
+                "1762316694195.jpg",
+                "1762400736640.jpg",
+                "1762490524791.jpg",
+                "1762580301446.jpg",
+                "1762669836383.jpg",
+                "1762696472126.jpg",
+                "1762696588319.jpg",
+                "1762696656730.jpg",
+                "1763013450519.jpg",
+                "1763096267609.jpg",
+                "1763096294967.jpg",
+                "1763178060185.jpg",
+                "1763274933768.jpg",
+                "1763353402415.jpg",
+                "1763441923498.jpg",
+                "1763525976015.jpg",
+                "1763611354165.jpg",
+                "1763709045452.jpg",
+                "1763792030931.jpg",
+                "1763959753250.jpg",
+                "1764134208054.jpg",
+                "1764218096630.jpg",
+                "1764306869445.jpg",
+                "1764392476212.jpg",
+                "1764392519147.jpg",
+                "1764483207737.jpg",
+                "1764483373161.jpg",
+                "1764566486096.jpg",
+                "1764566509368.jpg",
+                "1764651441282.jpg",
+                "1764732917833.jpg",
+                "1764823328795.jpg",
+                "1764912140746.jpg",
+                "1765000215798.jpg",
+                "1765081276390.jpg",
+                "1765168965515.jpg",
+                "1765257160979.jpg",
+                "1765347287382.jpg",
+                "1765429407944.jpg",
+                "1765519904164.jpg",
+                "1765604016100.jpg",
+                "1765681999804.jpg",
+                "1765772651814.jpg",
+                "1765858209291.jpg",
+                "1765937256862.jpg",
+                "1766118175424.jpg",
+                "1766118205784.jpg",
+                "1766209463439.jpg",
+                "1766209618443.jpg",
+                "1766298206889.jpg",
+                "1766380291104.jpg",
+                "1766474100049.jpg",
+                "1766474110810.jpg",
+                "1766474115828.jpg",
+                "1766570466825.jpg",
+                "1766637310777.jpg",
+                "1766719165421.jpg",
+                "1766798940603.jpg",
+                "1766799175348.jpg",
+                "1766885899762.jpg",
+                "1766980231070.jpg",
+                "1767065607804.jpg",
+                "1767065621946.jpg",
+                "20250912_101938075.png",
+                "20250913_111534-COLLAGE.jpg",
+                "20250920_184544-COLLAGE.jpg",
+                "20250928_131958-COLLAGE.jpg",
+                "20251004_140409-ANIMATION.gif",
+                "20251004_140515-COLLAGE.jpg",
+                "6e0cbef5-cc90-41f2-bf83-ce2b1f29c5a2.jpg",
+                "ASMR_Positive_Vocabulary_Montage_Generation.mp4",
+                "Creative_Video_Generation_The_Bloom_of_Joy_ (1).mp4",
+                "Dynamic_Word_Animation_Video_Generation.mp4",
+                "MOVIE(1).mp4",
+                "MOVIE.mp4",
+                "Positive_Word_Montage_Video_Generation.mp4",
+                "VID_20251004_233017_348_bsl.mp4",
+                "image.jpg"
+            ];
         }
 
         // Render gallery items
